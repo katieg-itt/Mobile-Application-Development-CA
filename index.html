@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <title>House Insurance</title>
+    <meta charset='utf-8'>
+    <meta name='description' content=''>
+    <meta name='keywords' content=''>
+    <meta name='author' content=''>
+    <meta name='robots' content='all'>
+    <!-- <meta http-equiv='X-UA-Compatible' content='IE=edge'> -->
+    <link href='/favicon.png' rel='shortcut icon' type='image/png'>
+    <style>
+    body{
+      margin: 0 10% 0 10%;
+      background-color: #E0E0E0;
+    }
+    h2{
+     border-style: solid;
+     text-align: center;    
+     background-color:#fff;
+     font-size: 2.5em;
+    }
+    h3{
+    padding-left: 10px;
+    font-size: 1.5em;
+    }
+    p{
+      font-weight: bold;
+    }
+    #right{
+      float: right;
+      padding: 15px;
+      border: solid;
+      background-color:#6666FF;
+      width:40%;  
+      margin: 0 0 10px 0;
+    } 
+    #left{
+      float: left;
+      padding: 15px;
+      border: solid;
+      background-color:#6666FF;
+      clear: both; 
+      width:40%;  
+      margin: 0 0 10px 0;
+    }
+@media all and (max-width: 750px) {
+  #left {
+    width:100%;
+    clear:both;
+    float:none;
+  }
+  #right {
+    width:100%;
+    clear:both;
+    float:none;
+  }
+}
+
+    #total{
+      clear: both;
+      text-align: center;
+    }
+    #quote{
+      border-style: solid;
+      margin: 10px;
+      padding-left: 10px;
+      background-color:#6666FF;
+    }
+    button{
+      color: #FFF;
+      background-color: #6666FF;
+      font-weight: bold;
+      font-size: 100%;
+      text-transform: uppercase;
+    }
+    button:hover{
+      color: #FFF;
+      background: #000000;
+    }
+    label{ 
+      display:block; float:left; width:45%; text-align:left; clear:left; padding:5px 5px 10px 0;
+    }
+    input{ 
+      display:block; float:left; width:45%; clear:right;
+    }
+    select{ 
+      display:block; float:left; width:45%;
+    }
+    #helpbox {
+      clear:both;
+      padding: 15px;
+      margin: 10px 0;
+      border: solid;
+      background-color:#6666FF;
+    }
+    #help {
+      font-weight:bold;
+    }
+    p{ 
+      clear:both; 
+    }
+    </style>
+    <script>
+
+    function calculate() {
+      var quote_details = ['Own', 'Type', 'Years Old', 'House Alarm', 'Smoke Detectors', 'Location', 'Claims Free', 'Buildings', 'Contents', 'Excess']; 
+      var quote_prices = [];
+      var output = '';
+      var total_cost = 0;
+
+      if(document.house_insurace.own_status.value == 'own_and_live') {
+        quote_prices[0] = 50;
+      } else if (document.house_insurace.own_status.value == 'own_summer_house') {
+        quote_prices[0] = 25;
+      } else {
+        quote_prices[0] = 5;
+      }
+
+      if(document.house_insurace.property_type.value == 'detached') {
+        quote_prices[1] = 100;
+      } else if(document.house_insurace.property_type.value == 'semi-Detached') {
+        quote_prices[1] = 50;
+      } else if(document.house_insurace.property_type.value == 'bungalow') {
+        quote_prices[1] = 65;
+      } else if(document.house_insurace.property_type.value == 'terraced') {
+        quote_prices[1] = 40;
+      } else {
+        quote_prices[1] = 10;
+      }
+
+      if(document.house_insurace.property_age.value == 'lessthan1year') {
+        quote_prices[2] = 50;
+      } else if(document.house_insurace.property_age.value == 'greaterthan1lessthan5') {
+        quote_prices[2]  = 75;
+      } else if(document.house_insurace.property_age.value == 'greaterthan5lessthan15') {
+        quote_prices[2]  = 90;
+      } else {
+        quote_prices[2]  = 100;
+      }
+
+      if(document.house_insurace.alarm.value == 'no_alarm') {
+        quote_prices[3]  = 100;
+      } else if(document.house_insurace.alarm.value == 'standard_alarm') {
+        quote_prices[3]  = 40;
+      } else {
+        quote_prices[3]  = 10;
+      }
+
+      if(document.house_insurace.smoke_detector.value == 'no') {
+        quote_prices[4] = 50;
+      } else {
+        quote_prices[4] = 10;
+      }
+
+      if(document.house_insurace.prop_location.value == 'dublin') {
+        quote_prices[5] = 50;
+      } else if(document.house_insurace.prop_location.value == 'westofireland') {
+        quote_prices[5] = 10;
+      } else {
+        quote_prices[5] = 30;
+      }
+
+      if(document.house_insurace.claims_free.value == '1year') {
+        quote_prices[6] = 100;
+      } else if(document.house_insurace.claims_free.value == '2years') {
+        quote_prices[6] = 80;
+      } else if(document.house_insurace.claims_free.value == '3years') {
+        quote_prices[6] = 60;
+      } else if(document.house_insurace.claims_free.value == '4years') {
+        quote_prices[6] = 40;
+      } else{
+        quote_prices[6] = 20;
+      }
+
+      if(isNaN(document.house_insurace.building_cover.value)) {
+        alert('Building cover must be a number');
+        return false;
+      } else {
+        if(parseFloat(document.house_insurace.building_cover.value) <= 100000) {
+          alert('Buildings cover must be greater than 100,000');
+          return false;
+        } else {
+          quote_prices[7] = document.house_insurace.building_cover.value/100;
+        }
+      }
+
+      if(document.house_insurace.contents_cover.value == 'twentythousand') {
+        quote_prices[8] = 50;
+      } else if(document.house_insurace.contents_cover.value == 'fortythousand') {
+        quote_prices[8] = 70;
+      } else if(document.house_insurace.contents_cover.value == 'sixtythousand') {
+        quote_prices[8] = 90;
+      } else if(document.house_insurace.contents_cover.value == 'eightythousand') {
+        quote_prices[8] = 110;
+      } else {
+        quote_prices[8] = 150;        
+      }
+
+
+      if(document.house_insurace.claim_excess.value == '250') {
+        quote_prices[9] = 30;
+      } else if(document.house_insurace.claim_excess.value == '500') {
+        quote_prices[9] = 50;
+      } else {
+        quote_prices[9] = 70;
+      }
+
+      for(i=0;i<quote_details.length;i++) {
+        output += quote_details[i] + ': ' + quote_prices[i] + '<br />';
+        total_cost += quote_prices[i];
+      }
+      output += '<strong>Total : '+total_cost+'</strong>';
+
+      document.getElementById('quote').innerHTML = output;
+
+
+    }
+
+    </script>
+  </head>
+  <body>
+    <form name="house_insurace">
+    <h2><img src="house-borders.jpg" alt="houses" style="width:100%; height:228px">House Insurance</h2>
+    <h3>House Insurance Entilement Form</h3>
+    
+    <div id="left">
+      <label onmouseover="document.getElementById('help').innerHTML = 'Your first name';" onmouseout="document.getElementById('help').innerHTML = '';"><strong>First Name:</strong></label><input type="text" name="first_name"> &nbsp;
+      <label onmouseover="document.getElementById('help').innerHTML = 'Your surname';" onmouseout="document.getElementById('help').innerHTML = '';"><strong>Last Name:</strong></label><input type="text" name="last_name">
+
+      <p onmouseover="document.getElementById('help').innerHTML = 'Is this your own property, do you live in it full time, or do you rent it from a third party?';" onmouseout="document.getElementById('help').innerHTML = '';"><strong>Do you own the property or rent from it from someone?</strong></p>
+      <label>I own and live in it</label><input type="radio" name="own_status" value="own_and_live" checked>
+      <label>I own it and its a Summer House</label><input type="radio" name="own_status" value="own_summer_house">
+      <label>I rent it from someone</label><input type="radio" name="own_status" value="rent_from_someone">
+
+      <label onmouseover="document.getElementById('help').innerHTML = 'What type of property do you want insured?';" onmouseout="document.getElementById('help').innerHTML = '';"><strong>Type of property</strong></label>
+      <select name='property_type'>
+        <option value="detached">Detached</option>
+        <option value="semi-Detached">Semi-Detached</option>
+        <option value="bungalow">Bungalow</option>
+        <option value="terraced">Terraced</option>
+        <option value="apartment">Apartment</option>
+      </select>
+
+      <label onmouseover="document.getElementById('help').innerHTML = 'How old is the property';" onmouseout="document.getElementById('help').innerHTML = '';"><strong>Years Old</strong></label>
+      <select name="property_age">
+        <option value="lessthan1year">Less than 1 year</option>
+        <option value="greaterthan1lessthan5">Greater than 1 year but less than 5 years</option>
+        <option value="greaterthan5lessthan15">Greater than 5 years but less than 15 years</option>
+        <option value="greaterthan15">Greater than 15 years</option>
+      </select>
+
+      <label onmouseover="document.getElementById('help').innerHTML = 'What type of alarm is the property fitted with?';" onmouseout="document.getElementById('help').innerHTML = '';"><strong>House Alarm</strong></label>
+      <label>No</label><input type="radio" name="alarm" value="no_alarm" checked>
+      <label>Yes-Standard Alarm</label><input type="radio" name="alarm" value="standard_alarm">
+      <label>Yes-Monitored Alarm</label><input type="radio" name="alarm" value="monitored_alarm">
+      <div style="clear:both;"></div>
+    </div>
+         
+    <div id="right">
+      <p onmouseover="document.getElementById('help').innerHTML = 'Does the property have smoke alarms?';" onmouseout="document.getElementById('help').innerHTML = '';">At Least Two Smoke Detectors Fitted</p>
+      <label>No</label><input type="radio" name="smoke_detector" value="no" checked>
+      <label>Yes</label><input type="radio" name="smoke_detector" value="yes">
+
+      <label onmouseover="document.getElementById('help').innerHTML = 'Where in the country is the property located?';" onmouseout="document.getElementById('help').innerHTML = '';"><strong>Location</strong></label>
+      <select name="prop_location">
+        <option value="dublin">Dublin</option>
+        <option value="cork">Cork</option>
+        <option value="limerick">Limerick</option>
+        <option value="kerry">Kerry</option>
+        <option value="westofireland">West of Ireland</option>
+      </select>
+
+      <label onmouseover="document.getElementById('help').innerHTML = 'How long is it since your most recent claim?';" onmouseout="document.getElementById('help').innerHTML = '';"><strong>Claims Free For ?</strong></label>
+      <select name="claims_free">
+        <option value="1year">1 Year</option>
+        <option value="2years">2 Years</option>
+        <option value="3years">3 Years</option>
+        <option value="4years">4 Years</option>
+        <option value="greaterorequalto5years">Greater than or equal to 5 Years</option>
+      </select>
+
+      <label onmouseover="document.getElementById('help').innerHTML = 'What is the value of the property?';" onmouseout="document.getElementById('help').innerHTML = '';"><strong>Buildings Cover</strong></label>
+      <input type="text" name="building_cover" value="">
+
+      <label onmouseover="document.getElementById('help').innerHTML = 'What value of contents do you want covered?';" onmouseout="document.getElementById('help').innerHTML = '';"><strong>Contents Cover</strong></label>
+      <select name="contents_cover">
+        <option value="twentythousand">20,000</option>
+        <option value="fortythousand">40,000</option>
+        <option value="sixtythousand">60,000</option>
+        <option value="eightythousand">80,000</option>
+        <option value="greaterthaneightythousand">Greater than 80,000</option>
+      </select>
+
+      <p onmouseover="document.getElementById('help').innerHTML = 'Your excess is the amount you must pay out of pocket';" onmouseout="document.getElementById('help').innerHTML = '';"><strong>Claim Excess</strong></p>
+      <label>&euro;250</label><input type="radio" name="claim_excess" value="250" checked>
+      <label>&euro;500</label><input type="radio" name="claim_excess" value="500">
+      <label>&euro;1,000</label><input type="radio" naame="claim_excess" value="1000">
+      <div style="clear:both;"></div>
+    </div>
+
+    <div id="helpbox">Hover over an item for help : <span id="help"></span></div>
+             
+     <div id="total">
+      <button name="Calculate" onclick="calculate(); return false;">Calculate</button>
+     </div>
+             
+    <div id="quote"> 
+     <p>A summary of your quote is as follows:</p>
+    </div>   
+    </form>
+  </body>
+</html>
+
+<!--Image gotten from https://clevelandluxhomes.files.wordpress.com/2011/02/house-borders.jpg -->
